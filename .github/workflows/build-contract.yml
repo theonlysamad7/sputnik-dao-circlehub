@@ -51,6 +51,6 @@ jobs:
           name: circlehub-contracts
           path: |
             target/near/sputnikdao2/sputnikdao2.wasm
-            target/near/sputnikdao-factory2/sputnikdao-factory2.wasm
+            target/near/sputnikdao_factory2/sputnikdao_factory2.wasm
           if-no-files-found: error
           retention-days: 14

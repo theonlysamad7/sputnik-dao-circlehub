@@ -25,6 +25,7 @@ pub use crate::views::{BountyOutput, ProposalOutput};
 
 pub mod action_log;
 mod bounties;
+mod circlehub_membership;
 mod delegation;
 mod ext_fungible_token;
 mod policy;

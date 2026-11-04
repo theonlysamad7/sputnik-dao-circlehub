@@ -25,7 +25,7 @@ jobs:
         uses: dtolnay/rust-toolchain@stable
 
       - name: Install cargo-near
-        run: cargo install --locked cargo-near
+        run: run: cargo install --locked cargo-near --version 0.17.0
 
       - name: Build reproducible WASM
         working-directory: sputnikdao2

@@ -1,3 +1,4 @@
+
 name: Build CircleHub SputnikDAO Contract
 
 on:
@@ -6,39 +7,41 @@ on:
     branches:
       - main
     paths:
-      - 'sputnikdao2/**'
-      - 'Cargo.lock'
-      - 'Cargo.toml'
-      - '.github/workflows/build-contract.yml'
+      - "sputnikdao2/**"
+      - "Cargo.lock"
+      - "Cargo.toml"
+      - ".github/workflows/build-contract.yml"
 
 permissions:
   contents: read
 
 jobs:
   build:
+    name: Build NEAR contract
     runs-on: ubuntu-22.04
+
     steps:
       - name: Checkout source
         uses: actions/checkout@v4
 
-      - name: Install Rust
+      - name: Install Rust 1.86
         uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: "1.86.0"
+          targets: wasm32-unknown-unknown
 
       - name: Install cargo-near
-        run: run: cargo install --locked cargo-near --version 0.17.0
+        run: cargo install --locked cargo-near --version 0.17.0
 
       - name: Build reproducible WASM
         working-directory: sputnikdao2
         run: cargo near build reproducible-wasm
 
-      - name: Locate WASM output
-        run: |
-          find sputnikdao2/target -type f -name '*.wasm' -print
-
       - name: Upload contract artifact
         uses: actions/upload-artifact@v4
         with:
           name: circlehub-sputnikdao-contract
-          path: sputnikdao2/target/**/*.wasm
+          path: "sputnikdao2/target/**/*.wasm"
           if-no-files-found: error
           retention-days: 14
+          

@@ -1,4 +1,4 @@
-name: Build CircleHub SputnikDAO Contract
+name: Build CircleHub Contracts
 
 on:
   workflow_dispatch:
@@ -6,17 +6,17 @@ on:
     branches:
       - main
     paths:
-      - "sputnikdao2/**"
-      - "Cargo.lock"
-      - "Cargo.toml"
-      - ".github/workflows/build-contract.yml"
+      - 'sputnikdao2/**'
+      - 'sputnikdao-factory2/**'
+      - 'Cargo.lock'
+      - 'Cargo.toml'
+      - '.github/workflows/build-contract.yml'
 
 permissions:
   contents: read
 
 jobs:
   build:
-    name: Build NEAR contract
     runs-on: ubuntu-22.04
 
     steps:
@@ -37,17 +37,20 @@ jobs:
       - name: Install cargo-near
         run: cargo install --locked cargo-near --version 0.17.0
 
-      - name: Build reproducible WASM
+      - name: Build DAO contract
         working-directory: sputnikdao2
+        run: cargo near build reproducible-wasm
+
+      - name: Build factory contract
+        working-directory: sputnikdao-factory2
         run: cargo near build reproducible-wasm
 
       - name: Upload contract artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: circlehub-sputnikdao-contract
+          name: circlehub-contracts
           path: |
             target/near/sputnikdao2/sputnikdao2.wasm
-            target/near/sputnikdao2/sputnikdao2_abi.json
-            target/near/sputnikdao2/sputnikdao2_abi.zst
+            target/near/sputnikdao-factory2/sputnikdao-factory2.wasm
           if-no-files-found: error
           retention-days: 14

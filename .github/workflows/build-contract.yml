@@ -41,10 +41,13 @@ jobs:
         working-directory: sputnikdao2
         run: cargo near build reproducible-wasm
 
-      - name: Upload contract artifact
+      - name: Upload contract artifacts
         uses: actions/upload-artifact@v4
         with:
           name: circlehub-sputnikdao-contract
-          path: "sputnikdao2/target/**/*.wasm"
+          path: |
+            target/near/sputnikdao2/sputnikdao2.wasm
+            target/near/sputnikdao2/sputnikdao2_abi.json
+            target/near/sputnikdao2/sputnikdao2_abi.zst
           if-no-files-found: error
           retention-days: 14
